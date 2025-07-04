@@ -1,8 +1,18 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import primary_color from '../components/colors';
 
 const Getstartedscreen = () => {
-  return <View></View>;
+  return (
+    <SafeAreaView style={styles.mainScreen}>
+      <View></View>
+    </SafeAreaView>
+  );
 };
-
+const styles = StyleSheet.create({
+  mainScreen: {
+    backgroundColor: primary_color,
+    flex: 1,
+  },
+});
 export default Getstartedscreen;
