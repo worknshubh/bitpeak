@@ -8,6 +8,7 @@ import {
 } from 'react-native-responsive-screen';
 import Trendingcard from '../components/trendingcards';
 import { FlatList } from 'react-native-gesture-handler';
+import API_KEY from '../keys';
 
 const Homescreen = () => {
   const [topTrending, settopTrending] = useState(null);
@@ -17,7 +18,7 @@ const Homescreen = () => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'x-cg-demo-api-key': 'CG-XErqXNguJ1A2qAbzn2oEVtKH',
+        'x-cg-demo-api-key': API_KEY,
       },
     })
       .then(data => data.json())
