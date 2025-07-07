@@ -12,25 +12,38 @@ import API_KEY from '../keys';
 
 const Homescreen = () => {
   const [topTrending, settopTrending] = useState(null);
-
+  const [onthisPage, setOnthisPage] = useState(true);
   useEffect(() => {
-    fetch('https://api.coingecko.com/api/v3/search/trending', {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'x-cg-demo-api-key': API_KEY,
-      },
-    })
-      .then(data => data.json())
-      .then(res => {
-        const temp = [];
-        const data = res.coins;
-        data.forEach(element => {
-          console.log(element);
-          temp.push(element);
+    setOnthisPage(true);
+    function getData() {
+      fetch('https://api.coingecko.com/api/v3/search/trending', {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          'x-cg-demo-api-key': API_KEY,
+        },
+      })
+        .then(data => data.json())
+        .then(res => {
+          const temp = [];
+          const data = res.coins;
+          data.forEach(element => {
+            console.log(element);
+            temp.push(element);
+          });
+          settopTrending(temp);
         });
-        settopTrending(temp);
-      });
+    }
+    getData();
+
+    const interval = setInterval(() => {
+      getData();
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+      setOnthisPage(false);
+    };
   }, []);
   return (
     <SafeAreaView style={styles.mainScreen}>

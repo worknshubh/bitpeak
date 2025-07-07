@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 const Trendingcard = props => {
+  const navigation = useNavigation();
+  function redirect_graphdata() {
+    navigation.navigate('graphScreen', { props });
+  }
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={redirect_graphdata}>
       <View style={styles.card_container}>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[styles.texts, { fontSize: 18 }]}>

@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Settings, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Settings,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Homescreen from './homeScreen';
 import primary_color from '../components/colors';
@@ -7,7 +14,10 @@ import Sidebar from './sidebarScreen';
 import Watchlist from './watchlistScreen';
 import Profile from './profileScreen';
 import SettingsScreen from './settingsScreen';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +42,21 @@ const Drawermenu = () => {
         drawerInactiveTintColor: 'white',
         drawerItemStyle: {
           margin: 5,
+        },
+        headerRight: () => {
+          return (
+            <TouchableOpacity>
+              <Image
+                source={require('../assets/images/Search.png')}
+                style={{
+                  height: 30,
+                  width: 30,
+                  tintColor: '#E09913',
+                  marginRight: widthPercentageToDP('5%'),
+                }}
+              ></Image>
+            </TouchableOpacity>
+          );
         },
       }}
     >
