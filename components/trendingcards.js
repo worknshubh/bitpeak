@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 const Trendingcard = props => {
   const navigation = useNavigation();
   function redirect_graphdata() {
-    navigation.navigate('graphScreen', { props });
+    const redirected_by = 'Trending';
+    navigation.navigate('graphScreen', { props, redirected_by });
   }
   return (
     <TouchableOpacity onPress={redirect_graphdata}>

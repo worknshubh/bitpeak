@@ -7,6 +7,7 @@ import Drawermenu from './screens/drawerMenu';
 import Graphscreen from './screens/maingraphs';
 import primary_color from './components/colors';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
+import Searchmenu from './screens/searchScreen';
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
@@ -33,6 +34,17 @@ const App = () => {
             headerTintColor: 'white',
             headerTitleStyle: { fontFamily: 'Kanit-Regular', fontSize: 25 },
             headerShadowVisible: true,
+          }}
+        ></Stack.Screen>
+
+        <Stack.Screen
+          name="SearchScreen"
+          component={Searchmenu}
+          options={{
+            headerTitle: 'Search Menu',
+            headerTintColor: 'white',
+            headerStyle: { backgroundColor: primary_color },
+            headerTitleStyle: { fontFamily: 'Kanit-Regular', fontSize: 25 },
           }}
         ></Stack.Screen>
       </Stack.Navigator>

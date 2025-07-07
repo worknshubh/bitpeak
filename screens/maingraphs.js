@@ -30,15 +30,21 @@ const Graphscreen = () => {
     return date.toLocaleDateString('en-US', options);
   }
   const route = useRoute();
-  let { props } = route.params;
+  let { props, redirected_by } = route.params;
 
   const [coin_data, setCoin_data] = useState([]);
+  const [coin_info, setCoin_info] = useState(null);
+  let coin_id = '';
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(props.carddata.item.name);
+        if (redirected_by === 'Trending') {
+          coin_id = props.carddata.item.id;
+        } else {
+          coin_id = props.searchdata.id;
+        }
         const res = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${props.carddata.item.id}/market_chart?vs_currency=usd&days=180`,
+          `https://api.coingecko.com/api/v3/coins/${coin_id}/market_chart?vs_currency=usd&days=180`,
           {
             method: 'GET',
             headers: {
@@ -48,6 +54,24 @@ const Graphscreen = () => {
           },
         );
 
+        const fetch_coin_data = await fetch(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coin_id}`,
+          {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              'x-cg-demo-api-key': API_KEY,
+            },
+          },
+        );
+
+        const fetch_json = await fetch_coin_data.json();
+        const coin_temp = [];
+        fetch_json.forEach(el => {
+          coin_temp.push(el);
+          // console.log('coin temp', coin_temp);
+        });
+        setCoin_info(coin_temp);
         const json = await res.json();
         const temp = [];
         json.prices.forEach(element => {
@@ -55,13 +79,11 @@ const Graphscreen = () => {
             date: formatDate(element[0]),
             price: element[1] / 1000,
           };
-          // console.log(data);
+
           temp.push(data);
         });
-        // console.log(temp.length);
-        // console.log(temp);
+
         setCoin_data(temp);
-        // console.log(coin_data);
       } catch (error) {}
     };
 
@@ -69,14 +91,14 @@ const Graphscreen = () => {
   }, []);
   const dates = [];
   const prices = [];
-  console.log(coin_data);
+  // console.log(coin_data);
   coin_data.map((el, index) => {
     if (index % 30 === 0) {
       dates.push(el.date);
       prices.push(el.price);
-      console.log('date is', el.date, 'and price is ', el.price);
-      console.log(dates);
-      console.log(prices);
+      // console.log('date is', el.date, 'and price is ', el.price);
+      // console.log(dates);
+      // console.log(prices);
     }
     // console.log('here are prices ', prices);
   });
@@ -131,17 +153,29 @@ const Graphscreen = () => {
             color: '#E09913',
           }}
         >
-          {props.carddata.item.name}
+          {redirected_by === 'Trending'
+            ? props.carddata.item.name
+            : props.searchdata.name}
         </Text>
         <Text style={{ padding: 15, textAlign: 'justify', color: 'white' }}>
-          {props.carddata.item.data.content === null
-            ? ''
-            : props.carddata.item.data.content.description}
+          {redirected_by === 'Trending'
+            ? props.carddata.item.data.content === null
+              ? ''
+              : props.carddata.item.data.content.description
+            : ''}
         </Text>
       </View>
       <View style={styles.coindata}>
-        <Text style={{ color: '#E09913', fontFamily: 'Kanit-Medium' }}>
-          Market Rank: {props.carddata.item.market_cap_rank}
+        <Text
+          style={{
+            color: '#E09913',
+            fontFamily: 'Kanit-Medium',
+          }}
+        >
+          Market Rank:{' '}
+          {redirected_by === 'Trending'
+            ? props.carddata.item.market_cap_rank
+            : props.searchdata.market_cap_rank}
         </Text>
 
         <Text
@@ -152,7 +186,8 @@ const Graphscreen = () => {
             marginTop: 5,
           }}
         >
-          Total Volume: {props.carddata.item.data.total_volume}
+          Total Volume: ${' '}
+          {coin_info != null ? coin_info[0].total_volume : 'Loading'}
         </Text>
         <Text
           style={{
@@ -162,7 +197,7 @@ const Graphscreen = () => {
             marginTop: 5,
           }}
         >
-          Price: ${props.carddata.item.data.price}
+          Price: ${coin_info != null ? coin_info[0].current_price : 'Loading'}
         </Text>
         <Text
           style={{
@@ -172,7 +207,7 @@ const Graphscreen = () => {
             marginTop: 5,
           }}
         >
-          Price [BTC]: ${props.carddata.item.data.price_btc}
+          High [24h]: ${coin_info != null ? coin_info[0].high_24h : 'Loading'}
         </Text>
         <Text
           style={{
@@ -182,7 +217,18 @@ const Graphscreen = () => {
             marginTop: 5,
           }}
         >
-          Market Capital: {props.carddata.item.data.market_cap}
+          Low [24h]: ${coin_info != null ? coin_info[0].low_24h : 'Loading'}
+        </Text>
+        <Text
+          style={{
+            color: 'white',
+            fontFamily: 'Kanit-Light',
+            fontSize: 18,
+            marginTop: 5,
+          }}
+        >
+          Market Capital: ${' '}
+          {coin_info != null ? coin_info[0].market_cap : 'Loading'}
         </Text>
       </View>
       <View style={{ padding: 20 }}>

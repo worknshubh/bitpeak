@@ -21,7 +21,7 @@ import {
 
 const Drawer = createDrawerNavigator();
 
-const Drawermenu = () => {
+const Drawermenu = ({ navigation }) => {
   return (
     <Drawer.Navigator
       drawerContent={props => <Sidebar {...props}></Sidebar>}
@@ -45,7 +45,11 @@ const Drawermenu = () => {
         },
         headerRight: () => {
           return (
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SearchScreen');
+              }}
+            >
               <Image
                 source={require('../assets/images/Search.png')}
                 style={{
