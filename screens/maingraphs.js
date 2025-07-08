@@ -22,7 +22,10 @@ import {
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import API_KEY from '../keys';
+import Toast from 'react-native-toast-message';
 const Graphscreen = () => {
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -69,7 +72,7 @@ const Graphscreen = () => {
         const coin_temp = [];
         fetch_json.forEach(el => {
           coin_temp.push(el);
-          // console.log('coin temp', coin_temp);
+          console.log('coin temp', coin_temp);
         });
         setCoin_info(coin_temp);
         const json = await res.json();
@@ -240,6 +243,38 @@ const Graphscreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={() => {
+            if (props.redirected_by != 'watchlist') {
+              firestore()
+                .collection('users')
+                .doc(auth().currentUser.uid)
+                .get()
+                .then(res => {
+                  const temp = [];
+                  const data = res.data().watchlist;
+                  data.forEach(el => {
+                    temp.push(el);
+                  });
+
+                  temp.push({
+                    id: coin_info[0].id,
+                    name: coin_info[0].name,
+                    symbol: coin_info[0].symbol,
+                  });
+                  firestore()
+                    .collection('users')
+                    .doc(auth().currentUser.uid)
+                    .update({
+                      watchlist: temp,
+                    });
+                });
+            } else {
+              Toast.show({
+                type: 'info',
+                text1: 'Already added to Watchlist',
+              });
+            }
+          }}
         >
           <View>
             <Text
@@ -249,7 +284,9 @@ const Graphscreen = () => {
                 fontFamily: 'Kanit-Regular',
               }}
             >
-              Add to Watchlist
+              {props.redirected_by === 'watchlist'
+                ? 'Added to Watchlist'
+                : 'Add to Watchlist'}
             </Text>
           </View>
         </TouchableOpacity>
@@ -282,6 +319,7 @@ const Graphscreen = () => {
           By Shubh
         </Text>
       </View>
+      <Toast></Toast>
     </ScrollView>
   );
 };

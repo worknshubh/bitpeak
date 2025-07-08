@@ -8,6 +8,16 @@ import {
 } from 'react-native-responsive-screen';
 
 const Profile = () => {
-  return <SafeAreaView></SafeAreaView>;
+  return (
+    <SafeAreaView style={styles.mainScreen}>
+      <View></View>
+    </SafeAreaView>
+  );
 };
+const styles = StyleSheet.create({
+  mainScreen: {
+    backgroundColor: primary_color,
+    flex: 1,
+  },
+});
 export default Profile;

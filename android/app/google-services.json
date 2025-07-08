@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "266022927073",
+    "project_id": "bitpeak-53731",
+    "storage_bucket": "bitpeak-53731.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266022927073:android:27995857c1a05e5ddcd5a0",
+        "android_client_info": {
+          "package_name": "com.bitpeak"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfFoRqymc-VpCTLqJp20SfUltW5wWDpBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

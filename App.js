@@ -8,6 +8,8 @@ import Graphscreen from './screens/maingraphs';
 import primary_color from './components/colors';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 import Searchmenu from './screens/searchScreen';
+import Signup from './screens/signupScreen';
+import Login from './screens/loginScreen';
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
@@ -16,6 +18,16 @@ const App = () => {
         <Stack.Screen
           name="getStartedscreen"
           component={Getstartedscreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{ headerShown: false }}
         ></Stack.Screen>
         <Stack.Screen

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,9 +12,15 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
+import auth from '@react-native-firebase/auth';
 const Getstartedscreen = ({ navigation }) => {
+  useEffect(() => {
+    if (auth().currentUser) {
+      navigation.replace('drawerScreen');
+    }
+  }, []);
   function redirecttohome() {
-    navigation.replace('drawerScreen');
+    navigation.replace('Signup');
   }
   return (
     <SafeAreaView style={styles.mainScreen}>
